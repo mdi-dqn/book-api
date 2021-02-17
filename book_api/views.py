@@ -7,9 +7,13 @@ from .serializers import BookSerializer
 
 
 class BookView(APIView):
-    def get(self, request):
-        books = Book.objects.all()
-        srz_data = BookSerializer(instance=books, many=True).data
+    def get(self, request, pk=None):
+        if pk:
+            books = Book.objects.get(pk=pk)
+            srz_data = BookSerializer(instance=books).data
+        else:
+            books = Book.objects.all()
+            srz_data = BookSerializer(instance=books, many=True).data
         return Response(srz_data, status=status.HTTP_200_OK)
 
     def post(self, request):
